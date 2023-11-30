@@ -1,9 +1,5 @@
 "use strict";
 
-const sampleData = `A Y
-B X
-C Z`;
-
 const gameData = `C X
 C X
 A Y
@@ -2504,6 +2500,9 @@ C Z
 C Z
 A Y
 A Z`;
+const sampleData = `A Z
+B Z
+C Z`;
 
 const sample = sampleData.split(`\n`);
 const A = 1;
@@ -2512,6 +2511,7 @@ const B = 2;
 const X = 2;
 const C = 2;
 const Z = 2;
+let array = [];
 
 const scoreCalc = function (data) {
   const gameArray = [];
@@ -2550,6 +2550,7 @@ const scoreCalc = function (data) {
       gameScore += 6;
     }
   });
+  array = gameArray;
   return gameScore;
 };
 
@@ -2561,7 +2562,7 @@ const scoreCalc = function (data) {
 // B Z Win
 // C X Win
 
-console.log(scoreCalc(gameData));
+//console.log(scoreCalc(gameData));
 
 const newScoreCalc = function (data) {
   const gameArray = [];
@@ -2570,4 +2571,62 @@ const newScoreCalc = function (data) {
   games.forEach((g) => {
     gameArray.push(g.split(` `));
   });
+
+  gameArray.forEach((game) => {
+    let playScore = { letter: ``, score: 0 };
+    if (game[1] === `X`) {
+      playScore.score = 6;
+      playScore.letter = `x`;
+    } else if (game[1] === `Y`) {
+      playScore.score = 3;
+      playScore.letter = `Y`;
+    } else {
+      playScore.score = 0;
+      playScore.letter = `Z`;
+    }
+    //console.log(playScore);
+
+    gameScore += playScore.score;
+    //console.log(gameScore);
+    gameScore += choice(game);
+  });
+  array = gameArray;
+  return gameScore;
 };
+
+const choice = function ([opp, outcome]) {
+  //console.log(outcome);
+  let str = "";
+  let score = 0;
+  if (outcome == "Z") {
+    str = `win`;
+    if (opp == "A") {
+      score = 2;
+    } else if (opp == "B") {
+      score = 3;
+    } else score = 1;
+  }
+  if (outcome === `Y`) {
+    str = `draw`;
+    if (opp == `A`) {
+      score = 1;
+    } else if (opp == `B`) {
+      score = 2;
+    } else score = 3;
+  }
+  if (outcome === "X") {
+    str = `loose`;
+    if (opp == `A`) {
+      score = 3;
+    } else if (opp == `B`) {
+      score = 1;
+    } else score = 2;
+  }
+  // console.log(score);
+  // console.log(str);
+
+  return score;
+};
+
+console.log(scoreCalc(gameData));
+console.log(array);
